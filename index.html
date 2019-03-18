@@ -7,18 +7,16 @@
     <title>Gerechtbeheersysteem</title>
     <meta name="description" content="Gerechtbeheersysteem description">
 
-
     <!-- See https://goo.gl/OOhYW5 -->
     <link rel="manifest" href="/manifest.json">
 
-
     <script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-    
-    
-
     <script type="module" src="/src/Gerechtbeheersysteem-app/header-app.js" crossorigin></script>
     <script type="module" src="/src/Gerechtbeheersysteem-app/navbar-app.js" crossorigin></script>
     <script type="module" src="/src/Gerechtbeheersysteem-app/content-app.js" crossorigin></script>
+
+
+
 
     <style type="text/css">
       
@@ -32,4 +30,12 @@
     <navbar-app></navbar-app>
     <content-app></content-app>
   </body>
+    <link rel="import" href="bower_components/searchable-multi/multi.html">
+    <script type="text/javascript">
+       function bla(){
+       var x = document.getElementsByClassName("selected-wrapper");
+
+        console.log(x);
+      }
+    </script>
 </html>

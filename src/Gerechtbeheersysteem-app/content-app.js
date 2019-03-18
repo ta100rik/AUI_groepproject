@@ -1,6 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import '@polymer/paper-input/paper-input.js';
-import 'high-select/lib/high-select.js';
 
 /**
  * @customElement
@@ -28,11 +27,15 @@ class ContentApp extends PolymerElement {
      <div class="content">
         Tafelnummer: <paper-input always-float-label value="{{prop1}}"></paper-input>
         <div>[[prop1]]</div>
-        <high-select search>
-          <template is="dom-repeat" items="{{Gerechten}}" as="gerecht">
-            <high-option> [[gerecht]]</high-option> 
-          </template>
-        </high-select>
+            <searchable-multi placeholder="Search fruits...">
+            <select multiple>
+                    <option>Bai pangang</option>
+                    <option>Witte rijst</option>
+                    <option>Bami met ei</option>
+            </select>
+          </searchable-multi>
+          <button></button>
+
       </div>
      
     `;

@@ -1,0 +1,267 @@
+<link rel="import" href="../../polymer/polymer-element.html" />
+<link rel="import" href="../../vaadin-control-state-mixin/vaadin-control-state-mixin.html">
+<link rel="import" href="../../vaadin-themable-mixin/vaadin-themable-mixin.html">
+<link rel="import" href="../../vaadin-themable-mixin/vaadin-theme-property-mixin.html">
+
+<link rel="import" href="multiselect-combo-box-mixin.html">
+
+<dom-module id="multiselect-combo-box">
+  <template>
+    <label part="label">[[label]]</label>
+
+    <div part="readonly-container" hidden$="[[!readonly]]">
+      [[_getDisplayValue(selectedItems, itemLabelPath)]]
+    </div>
+
+    <vaadin-combo-box-light
+      id="comboBox"
+      part="combo-box"
+      hidden$="[[readonly]]"
+      items="[[items]]"
+      item-id-path="[[itemIdPath]]"
+      item-label-path="[[itemLabelPath]]"
+      item-value-path="[[itemValuePath]]"
+      on-change="_comboBoxValueChanged"
+      opened="{{_opened}}">
+
+      <multiselect-combo-box-input
+        id="input"
+        class="input"
+        part="input-field"
+        placeholder="[[placeholder]]"
+        item-label-path="[[itemLabelPath]]"
+        items="[[selectedItems]]"
+        has-value="[[hasValue]]"
+        on-item-removed="_handleItemRemoved"
+        on-remove-all-items="_handleRemoveAllItems">
+      </multiselect-combo-box-input>
+    </vaadin-combo-box-light>
+
+    <div part="error-message" hidden$="[[!invalid]]">[[errorMessage]]</div>
+  </template>
+  <script>
+    {
+      /**
+       * `multiselect-combo-box`
+       *
+       * Multi select combo box based on the vaadin-combo-box
+       *
+       * @customElement
+       * @polymer
+       * @demo demo/index.html
+       */
+      class MultiselectComboBox extends
+        Vaadin.ControlStateMixin(
+          Vaadin.ThemePropertyMixin(
+            Vaadin.ThemableMixin(
+              MultiselectComboBoxMixin(Polymer.Element)))) {
+
+        static get is() {
+          return 'multiselect-combo-box';
+        }
+
+        ready() {
+          super.ready();
+          this.$.comboBox.renderer = this._customRenderer.bind(this);
+        }
+
+        static get properties() {
+          return {
+            /**
+             * The component label.
+             */
+            label: String,
+
+            /**
+             * The title attribute.
+             */
+            title: {
+              type: String,
+              value: '',
+              reflectToAttribute: true,
+              readOnly: true
+            },
+
+            /**
+             * The list of selected items.
+             *
+             * Note: modifying the selected items creates a new array each time.
+             */
+            selectedItems: {
+              type: Array,
+              value: () => [],
+              notify: true
+            },
+
+            /**
+             * The `readonly` attribute.
+             */
+            readonly: {
+              type: Boolean,
+              value: false,
+              reflectToAttribute: true
+            },
+
+            /**
+             * The `required` attribute.
+             */
+            required: {
+              type: Boolean,
+              value: false,
+              reflectToAttribute: true
+            },
+
+            /**
+             * The `invalid` attribute.
+             */
+            invalid: {
+              type: Boolean,
+              value: false,
+              reflectToAttribute: true,
+              notify: true
+            },
+
+            /**
+             * The `invalid` state error-message.
+             */
+            errorMessage: String,
+
+            /**
+             * `true` if overlay is opened.
+             */
+            _opened: Boolean,
+
+            /**
+             * `true` if overlay has been opened at least once.
+             */
+            _openedOnce: Boolean,
+          };
+        }
+
+        static get observers() {
+          return [
+            '_selectedItemsObserver(selectedItems, selectedItems.*)',
+            '_openedObserver(_opened)'];
+        }
+
+        /**
+         * Validates the component value.
+         *
+         * This method will set the components `valid` and `invalid` properties accordingly.
+         */
+        validate() {
+          const valid = this.required ? this.hasValue : true;
+          this.invalid = !valid;
+          return valid;
+        }
+
+        _selectedItemsObserver(selectedItems) {
+          this.hasValue = selectedItems && selectedItems.length > 0;
+          this._setTitle(this._getDisplayValue(selectedItems, this.itemLabelPath));
+
+          // due to: https://github.com/vaadin/vaadin-combo-box/issues/780,
+          // call `render()` only if combo box was opened at least once
+          if (this._openedOnce) {
+            this.$.comboBox.render();
+          }
+        }
+
+        _openedObserver(opened) {
+          if (!this._openedOnce && opened) {
+            this._openedOnce = true;
+          }
+        }
+
+        _comboBoxValueChanged() {
+          const item = this.$.comboBox.selectedItem;
+
+          const update = this.selectedItems.slice(0);
+
+          if (this._isSelected(item, this.selectedItems, this.itemIdPath)) {
+            update.splice(update.indexOf(item), 1);
+          } else {
+            update.push(item);
+          }
+
+          this.selectedItems = update;
+
+          this.$.comboBox.value = '';
+          this.validate();
+        }
+
+        _isSelected(item, selectedItems, itemIdPath) {
+          if (itemIdPath && item !== undefined) {
+            const found = selectedItems.find(selectedItem => this.get(itemIdPath, selectedItem) === this.get(itemIdPath, item));
+            return !!found;
+          } else {
+            return selectedItems.includes(item);
+          }
+        }
+
+        _handleItemRemoved(event) {
+          const item = event.detail.item;
+          const update = this.selectedItems.slice(0);
+          update.splice(update.indexOf(item), 1);
+          this.selectedItems = update;
+          this.validate();
+        }
+
+        _handleRemoveAllItems() {
+          this.set('selectedItems', []);
+          this.validate();
+        }
+
+        _getDisplayValue(selectedItems, itemLabelPath) {
+          return selectedItems.map(item => this._getItemDisplayValue(item, itemLabelPath)).join(', ');
+        }
+
+        get inputElement() {
+          return this.$.input;
+        }
+
+        /**
+         * Focusable element used by vaadin-control-state-mixin
+         */
+        get focusElement() {
+          return this.inputElement;
+        }
+
+        /**
+         * A custom renderer that adds the `multiselect` class to each `vaadin-combo-box-item`.
+         */
+        _customRenderer(root, comboBox, model) {
+          let comboBoxItem = root.firstElementChild;
+
+          if (!comboBoxItem) {
+            // build the template
+            comboBoxItem = document.createElement('div');
+            comboBoxItem.setAttribute('part', 'item-template');
+            root.appendChild(comboBoxItem);
+
+            const comboBoxItemContent = document.createElement('span');
+            comboBoxItemContent.textContent = this._getItemDisplayValue(model.item, this.itemLabelPath);
+            comboBoxItem.appendChild(comboBoxItemContent);
+
+            // attach class to host element
+            const host = root.getRootNode().host;
+            host.classList.add('multiselect');
+          }
+
+          // set selected attribute
+          const selected = this._isSelected(model.item, this.selectedItems, this.itemIdPath);
+          this._updateSelectedAttribute(comboBoxItem, selected);
+        }
+
+        _updateSelectedAttribute(element, selected) {
+          if (selected) {
+            element.setAttribute('selected', '');
+          } else {
+            element.removeAttribute('selected');
+          }
+        }
+      }
+
+      window.customElements.define(MultiselectComboBox.is, MultiselectComboBox);
+    }
+  </script>
+</dom-module>

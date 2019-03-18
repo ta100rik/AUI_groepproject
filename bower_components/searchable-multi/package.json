@@ -1,0 +1,29 @@
+{
+  "name": "searchable-multi",
+  "version": "1.0.0",
+  "main": "multi.js",
+  "description": "A more user friendly version of multi select",
+  "scripts": {
+    "test": "testee --browsers firefox test/basics.html test/label.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewp/searchable-multi.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/matthewp/searchable-multi/issues"
+  },
+  "homepage": "https://github.com/matthewp/searchable-multi#readme",
+  "files": [
+    "multi.js",
+    "multi.html"
+  ],
+  "devDependencies": {
+    "@webcomponents/custom-elements": "^1.0.0-alpha.3",
+    "@webcomponents/html-imports": "webcomponents/html-imports",
+    "cloudydom": "^1.0.1",
+    "mocha-test": "^2.0.3",
+    "testee": "^0.3.1"
+  }
+}
