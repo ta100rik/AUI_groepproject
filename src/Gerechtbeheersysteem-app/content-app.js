@@ -62,23 +62,27 @@ class ContentApp extends PolymerElement {
   }
   
  handleClick() {
-    
-    let new_array = new Array();
-     let multi = this.shadowRoot.querySelector('searchable-multi');
-     let input = this.shadowRoot.querySelector('paper-input');
-    for (var i = multi.value.length - 1; i >= 0; i--) {
-      if(multi.value[i] == "Bai pangang"){
-          alert("het gerecht " + multi.value[i] + " is helaas niet meer beschikbaar");
+
+        let new_array = new Array();
+         let multi = this.shadowRoot.querySelector('searchable-multi');
+         let input = this.shadowRoot.querySelector('paper-input');
+    if(multi.value.length > 0 && input.value){
+        for (var i = multi.value.length - 1; i >= 0; i--) {
+          if(multi.value[i] == "Bai pangang"){
+              alert("het gerecht " + multi.value[i] + " is helaas niet meer beschikbaar");
+          }else{
+            new_array.push({tafelnr:input.value,gerecht: multi.value[i], status: "Besteld"});
+          }
+        }
+        localStorage.setItem("lijst",JSON.stringify(new_array)); 
+       
+        alert("De gerechten zijn in behandeling");
+        document.location.reload(true);
+        
       }else{
-        new_array.push({tafelnr:input.value,gerecht: multi.value[i], status: "Besteld"});
+        alert("Er mist nog een tafelnummer of je hebt geen gerechten geslecteerd");
       }
     }
-    localStorage.setItem("lijst",JSON.stringify(new_array)); 
-   
-    alert("De gerechten zijn in behandeling");
-    document.location.reload(true);
-    
-  }
 }
 
 window.customElements.define('content-app', ContentApp);
