@@ -63,9 +63,14 @@ class ContentApp extends PolymerElement {
   }
   
  handleClick() {
-     let multi = this.shadowRoot.querySelector('searchable-multi');
-
-    console.log(multi.value); //
+    let new_array = new Array();
+    let multi = this.shadowRoot.querySelector('searchable-multi');
+    for (var i = multi.value.length - 1; i >= 0; i--) {
+      new_array.push({gerecht: multi.value[i], status: "Besteld"});
+    }
+    localStorage.setItem("lijst",JSON.stringify(new_array)); 
+   
+    
     
   }
 }

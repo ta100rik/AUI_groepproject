@@ -61,25 +61,17 @@ class GerechtContentApp extends PolymerElement {
                 </template>
             </table>
       </div>
-      <app-localStorage-document key="bestelling" data="{{Bestellingen}}"></app-localStorage-document>
      
     `;
   }
   static get properties() {
     return {
       Bestellingen:{
-        type:Array,
-         value: [
-          {gerecht: "Bai pangang", status: "Besteld"},
-          {gerecht: "Witte rijst", status: "Besteld"},
-          {gerecht: "Bami met ei", status: "Besteld"},
-          {gerecht: "Bai pangang", status: "Besteld"},
-          {gerecht: "Witte rijst", status: "Besteld"},
-          {gerecht: "Bami met ei", status: "Besteld"},
-          {gerecht: "Bai pangang", status: "Besteld"},
-          {gerecht: "Witte rijst", status: "Besteld"},
-          {gerecht: "Bami met ei", status: "Besteld"},
-        ]
+        type:Object,
+         value: 
+          JSON.parse(localStorage.getItem("lijst"))
+          
+        
       },
       status:{
         type:Array,
