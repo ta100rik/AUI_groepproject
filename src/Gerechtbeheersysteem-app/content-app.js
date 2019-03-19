@@ -63,14 +63,19 @@ class ContentApp extends PolymerElement {
   }
   
  handleClick() {
+    
     let new_array = new Array();
      let multi = this.shadowRoot.querySelector('searchable-multi');
     for (var i = multi.value.length - 1; i >= 0; i--) {
-      new_array.push({tafelnr: papin.value, gerecht: multi.value[i], status: "Besteld"});
+      if(multi.value[i] == "Bai pangang"){
+          alert("het gerecht " + mulit.value[i] + " is helaas niet meer beschikbaar");
+      }else{
+        new_array.push({gerecht: multi.value[i], status: "Besteld"});
+      }
     }
     localStorage.setItem("lijst",JSON.stringify(new_array)); 
    
-    
+
     
   }
 }
