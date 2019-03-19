@@ -43,6 +43,7 @@ class GerechtContentApp extends PolymerElement {
         <div class="content">
             <table>
                 <tr>
+                    <th style = width:10%>Tafelnummer</th>
                     <th style = width:70%>Gerechtnaam</th>
                     <th style = width:30%>Gerechtstatus</th>
                 </tr>
@@ -71,8 +72,6 @@ class GerechtContentApp extends PolymerElement {
         type:Object,
          value: 
           JSON.parse(localStorage.getItem("lijst"))
-          
-        
       },
       status:{
         type:Array,
