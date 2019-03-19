@@ -42,7 +42,7 @@ class navApp extends PolymerElement {
       <aside>
         <ul>
           <template is="dom-repeat" items="{{Menuitems}}" as="item">
-          <li><a href="#">[[item]]</a></li>
+          <li><a href="[[item.link]]">[[item.naam]]</a></li>
           </template>
         </ul>
       </aside>
@@ -55,8 +55,8 @@ class navApp extends PolymerElement {
       Menuitems: {
         type: Array,
         value: [
-          "Bestelling invoeren",
-          "Gerecht status aanpasssen",
+          {naam: "Bestelling invoeren", link: "/index.html"},
+          {naam: "Gerecht status aanpasssen", link: "/gerecht.html"}
         ]
       }
     };
