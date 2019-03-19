@@ -34,7 +34,7 @@ class ContentApp extends PolymerElement {
                     <option>Bami met ei</option>
             </select>
           </searchable-multi>
-          <button></button>
+          <button raised on-click="handleClick">bestel</button>
 
       </div>
      
@@ -52,8 +52,21 @@ class ContentApp extends PolymerElement {
           "Witte rijst",
           "Bami met ei"
         ]
+      },
+      Bestellingen:{
+        type:Array,
+        value: [
+          {gerecht: "nasi goreng", status: "besteld"}
+        ]
       }
     };
+  }
+  
+ handleClick() {
+  let multi = document.querySelector('.selected-wrapper');
+
+console.log(multi); //
+    
   }
 }
 
