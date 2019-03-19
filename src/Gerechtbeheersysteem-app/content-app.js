@@ -63,9 +63,9 @@ class ContentApp extends PolymerElement {
   }
   
  handleClick() {
-  let multi = document.querySelector('.selected-wrapper');
+     let multi = this.shadowRoot.querySelector('searchable-multi');
 
-console.log(multi); //
+    console.log(multi.value); //
     
   }
 }
