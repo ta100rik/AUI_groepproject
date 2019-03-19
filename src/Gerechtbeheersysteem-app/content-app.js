@@ -65,7 +65,7 @@ class ContentApp extends PolymerElement {
  handleClick() {
     
     let new_array = new Array();
-    let multi = this.shadowRoot.querySelector('searchable-multi');
+     let multi = this.shadowRoot.querySelector('searchable-multi');
     for (var i = multi.value.length - 1; i >= 0; i--) {
       if(multi.value[i] == "Bai pangang"){
           alert("het gerecht " + mulit.value[i] + " is helaas niet meer beschikbaar");

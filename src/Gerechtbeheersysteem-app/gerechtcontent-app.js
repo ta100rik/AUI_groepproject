@@ -48,7 +48,8 @@ class GerechtContentApp extends PolymerElement {
                 </tr>
                 <template is="dom-repeat" items="{{Bestellingen}}" as="bestelling">
                         <tr>
-                            <td style = width:70%>[[bestelling.gerecht]]</td>
+                            <td style= width:10%>[[bestelling.tafelnr]]</td>
+                            <td style = width:60%>[[bestelling.gerecht]]</td>
                             <td style = width:30%>
                                 <high-select search>
                                     <high-option>[[bestelling.status]]</high-option> 
