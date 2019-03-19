@@ -52,7 +52,8 @@ class GerechtContentApp extends PolymerElement {
                             <td style= width:10%>[[bestelling.tafelnr]]</td>
                             <td style = width:60%>[[bestelling.gerecht]]</td>
                             <td style = width:30%>
-                                <high-select search>
+                            
+                                <high-select search on-change="hello">
                                     <high-option>[[bestelling.status]]</high-option> 
                                     <template is="dom-repeat" items="{{status}}" as="state">
                                         <high-option>[[state]]</high-option> 
@@ -82,7 +83,17 @@ class GerechtContentApp extends PolymerElement {
          ]
       }
     };
+
   }
+  hello(evt){
+
+      console.log(evt.path[2].rowIndex);
+      let list = JSON.parse(localStorage.getItem("lijst"));
+      list[evt.path[2].rowIndex-1].status = evt.path[0].value;
+      console.log(list);
+      localStorage.setItem("lijst",JSON.stringify(list));
+  }
+
 }
 
 window.customElements.define('gerechtcontent-app', GerechtContentApp);
