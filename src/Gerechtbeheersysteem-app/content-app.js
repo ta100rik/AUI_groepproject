@@ -25,7 +25,7 @@ class ContentApp extends PolymerElement {
        
       </style>
      <div class="content">
-        Tafelnummer: <paper-input always-float-label value="{{prop1}}"></paper-input>
+        Tafelnummer: <paper-input type="number" always-float-label value="{{prop1}}"></paper-input>
             <searchable-multi placeholder="Search fruits...">
             <select multiple>
                     <option>Bai pangang</option>
@@ -68,14 +68,15 @@ class ContentApp extends PolymerElement {
      let input = this.shadowRoot.querySelector('paper-input');
     for (var i = multi.value.length - 1; i >= 0; i--) {
       if(multi.value[i] == "Bai pangang"){
-          alert("het gerecht " + mulit.value[i] + " is helaas niet meer beschikbaar");
+          alert("het gerecht " + multi.value[i] + " is helaas niet meer beschikbaar");
       }else{
         new_array.push({tafelnr:input.value,gerecht: multi.value[i], status: "Besteld"});
       }
     }
     localStorage.setItem("lijst",JSON.stringify(new_array)); 
    
-
+    alert("De gerechten zijn in behandeling");
+    document.location.reload(true);
     
   }
 }
