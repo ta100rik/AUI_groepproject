@@ -28,7 +28,7 @@ class ContentApp extends PolymerElement {
         Tafelnummer: <paper-input always-float-label value="{{prop1}}"></paper-input>
         <div>[[prop1]]</div>
             <searchable-multi placeholder="Search fruits...">
-            <select multiple>
+            <select multiple class="hi">
                     <option>Bai pangang</option>
                     <option>Witte rijst</option>
                     <option>Bami met ei</option>
@@ -63,9 +63,8 @@ class ContentApp extends PolymerElement {
   }
   
  handleClick() {
-  let multi = document.querySelector('.selected-wrapper');
-
-console.log(multi); //
+      console.log(document.getElementsByClassName("hi"));
+      console.log(document.getElementsByTagName("a"));
     
   }
 }
